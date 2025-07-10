@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Singular SDID Cross-Domain Persistence Demo</title>
+  <script src="parseSdidFromUrl.js"></script>
+  <script>
+    // Parse and persist sdid as soon as possible
+    parseSdidFromUrl();
+  </script>
+</head>
+<body>
+  <h1>Singular SDID Cross-Domain & Cross-Browser Persistence Demo</h1>
+  <p>
+    <strong>Instructions:</strong><br>
+    1. Visit this page with a URL like <code>?sdid=123e4567-e89b-12d3-a456-426614174000</code>.<br>
+    2. The script will store the sdid.<br>
+    3. All links to whitelisted domains will have the sdid appended automatically.<br>
+    4. The full URLs below will update so you can see the sdid in action.
+  </p>
+
+  <h2>Links</h2>
+  <ul id="link-list">
+    <li><a href="https://example.com/page1">Example.com (Whitelisted)</a></li>
+    <li><a href="https://anotherdomain.com/page2">AnotherDomain.com (Whitelisted)</a></li>
+    <li><a href="https://notwhitelisted.com/page3">NotWhitelisted.com (Not Whitelisted)</a></li>
+    <li><a href="/localpage.html">Local Page (Current Domain, Whitelisted)</a></li>
+  </ul>
+
+  <h2>Full Link URLs</h2>
+  <ul id="full-urls"></ul>
+
+  <script src="appendSdidToWhitelistedLinks.js"></script>
+  <script>
+    // Run after DOM and link updates to display full URLs
+    function displayFullUrls() {
+      const links = document.querySelectorAll('#link-list a');
+      const urlList = document.getElementById('full-urls');
+      urlList.innerHTML = '';
+      links.forEach(link => {
+        const li = document.createElement('li');
+        li.textContent = link.href;
+        urlList.appendChild(li);
+      });
+    }
+    // Ensure display runs after links are updated
+    document.addEventListener('DOMContentLoaded', function() {
+      appendSdidToWhitelistedLinks();
+      setTimeout(displayFullUrls, 0);
+    });
+  </script>
+</body>
+</html>
